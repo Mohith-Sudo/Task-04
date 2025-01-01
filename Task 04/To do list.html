@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif; /* Use Times New Roman */
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        input[type="text"],
+        input[type="datetime-local"],
+        button {
+            padding: 10px;
+            margin: 5px 0;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .task {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 10px;
+            margin: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task.completed {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+
+        .task .task-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            width: 100%;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Add task">
+        <input type="datetime-local" id="taskDateTime">
+        <button onclick="addTask()">Add</button>
+        <div id="taskList"></div>
+    </div>
+
+    <script>
+       // JavaScript remains the same
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskDateTime = document.getElementById('taskDateTime');
+            const taskList = document.getElementById('taskList');
+            const taskText = taskInput.value.trim();
+            const taskTime = taskDateTime.value;
+
+            if (taskText === "" || taskTime === "") {
+                alert("Please enter a task and select a date/time.");
+                return;
+            }
+
+            const taskDiv = document.createElement('div');
+            taskDiv.className = 'task';
+
+            const formattedTime = new Date(taskTime).toLocaleString();
+
+            taskDiv.innerHTML = `
+                <span>${taskText}</span>
+                <small>${formattedTime}</small>
+                <div class="task-actions">
+                    <button onclick="toggleComplete(this)">Complete</button>
+                    <button onclick="deleteTask(this)">Delete</button>
+                </div>`;
+
+            taskList.appendChild(taskDiv);
+            taskInput.value = "";
+            taskDateTime.value = "";
+        }
+
+        function toggleComplete(button) {
+            button.parentNode.parentNode.classList.toggle('completed'); // Traverse up two levels
+        }
+
+        function deleteTask(button) {
+            button.parentNode.parentNode.remove(); // Traverse up two levels
+        }
+    </script>
+</body>
+</html>
